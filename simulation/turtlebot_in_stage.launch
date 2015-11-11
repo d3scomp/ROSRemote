@@ -1,0 +1,59 @@
+<launch>
+	<param name="/use_sim_time" value="true"/>
+
+	<!--  ******************** Stage ********************  -->  
+	<node pkg="stage_ros" type="stageros" name="stageros" args="/home/ros/maze.world">
+		<param name="base_watchdog_timeout" value="0.5"/>
+	</node>
+
+	<!--  ****** Maps *****  -->
+	<node name="map_server" pkg="map_server" type="map_server" args="/home/ros/maze.yaml">
+		<param name="frame_id" value="/map"/>
+	</node>
+
+	<group ns="robot_0">
+		<!-- initial position -->
+		<arg name="initial_pose_x" default="2.0"/>
+		<arg name="initial_pose_y" default="2.0"/>
+		<arg name="initial_pose_a" default="0.0"/>
+
+		<param name="tf_prefix" value="/robot_0"/>
+
+		<remap from="map" to="/map"/>
+
+		<!--  ***************** Robot Model *****************  -->
+		<include file="$(find turtlebot_bringup)/launch/includes/robot.launch.xml">
+			<arg name="base" value="kobuki" />
+			<arg name="stacks" value="hexagons" />
+			<arg name="3d_sensor" value="asus_xtion_pro" />
+		</include>
+
+		<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+			<param name="use_gui" value="false"/>
+		</node>
+
+		<!-- Command Velocity multiplexer -->
+<!--		<node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
+		<node pkg="nodelet" type="nodelet" name="cmd_vel_mux" args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
+			<param name="yaml_cfg_file" value="$(find turtlebot_bringup)/param/mux.yaml"/>
+			<remap from="cmd_vel_mux/output" to="mobile_base/commands/velocity"/>
+		</node> -->
+
+		<!--  ************** Navigation  ***************  -->
+		<!-- <include file="$(find turtlebot_navigation)/launch/includes/move_base.launch.xml"/> -->
+
+		<include file="$(find turtlebot_navigation)/launch/includes/amcl.launch.xml">
+			<arg name="scan_topic" value="base_scan"/>
+			<arg name="use_map_topic" value="true"/>
+			<arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+			<arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+			<arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+			<arg name="odom_frame_id" value="/robot_0/odom"/>
+			<arg name="base_frame_id" value="/robot_0/base_link"/>
+		</include>
+
+		<!--  **************** Visualisation ****************  -->
+<!--		<node name="rviz" pkg="rviz" type="rviz" args="-d $(find turtlebot_stage)/rviz/robot_navigation.rviz"/> -->
+
+	</group>
+</launch>

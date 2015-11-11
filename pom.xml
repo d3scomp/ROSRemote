@@ -23,15 +23,25 @@
 			</resource>
 		</resources>
 		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>cz.cuni.mff.d3s.rosremote.server.ServerRunner</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
+
+
 	<dependencies>
-		<dependency>
-			<groupId>org.ros.rosjava_core</groupId>
-			<artifactId>rosjava</artifactId>
-			<version>0.2.1</version>
-		</dependency>
 		<dependency>
 			<groupId>com.github.spullara.mustache.java</groupId>
 			<artifactId>compiler</artifactId>
@@ -43,10 +53,4 @@
 			<version>1.5</version>
 		</dependency>
 	</dependencies>
-	<repositories>
-		<repository>
-			<id>rosjava_mvn_repo</id>
-			<url>https://github.com/rosjava/rosjava_mvn_repo/raw/master</url>
-		</repository>
-	</repositories>
 </project>

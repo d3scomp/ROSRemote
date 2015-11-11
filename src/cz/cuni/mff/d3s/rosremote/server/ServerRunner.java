@@ -19,7 +19,6 @@ public class ServerRunner {
 		}
 
 		Server server = new Server();
-		Naming.rebind("//localhost/ROSRemote", server);
-
+		Naming.rebind("//0.0.0.0/ROSRemote", server);
 	}
 }

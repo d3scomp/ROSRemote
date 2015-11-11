@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,7 +28,9 @@ import com.github.mustachejava.MustacheFactory;
  * @author Vladimir Matena <matena@d3s.mff.cuni.cz>
  *
  */
-public class Config {
+public class Config implements Serializable {
+	private static final long serialVersionUID = 0L;
+
 	public static final double DEFAULT_RESOLUTION = 0.02;
 	public static final long DEFAULT_SIM_INTERVAL_MS = 100;
 	public static final String SIM_FILES_PREFIX = "simulation/";
@@ -38,7 +41,9 @@ public class Config {
 	 * @author Vladimir Matena <matena@d3s.mff.cuni.cz>
 	 *
 	 */
-	class Turtlebot {
+	public class Turtlebot implements Serializable {
+		private static final long serialVersionUID = 0L;
+
 		public final String name;
 		public final String color;
 		public final double x;
@@ -86,7 +91,9 @@ public class Config {
 	 * @author Vladimir Matena <matena@d3s.mff.cuni.cz>
 	 *
 	 */
-	class FloorPlan {
+	class FloorPlan implements Serializable {
+		private static final long serialVersionUID = 0L;
+
 		public String name;
 		public String bitmap;
 		public double sizex;
@@ -156,7 +163,9 @@ public class Config {
 	 * @author Vladimir Matena <matena@d3s.mff.cuni.cz>
 	 *
 	 */
-	class StageWindow {
+	public class StageWindow implements Serializable {
+		private static final long serialVersionUID = 0L;
+
 		public final double sizex, sizey;
 		public final double centerx, centery;
 		public final double rotatex, rotatey;
@@ -224,7 +233,7 @@ public class Config {
 	/**
 	 * Mustache factory for processing templates
 	 */
-	private final MustacheFactory mf = new DefaultMustacheFactory();
+	private static final MustacheFactory mf = new DefaultMustacheFactory();
 
 	/**
 	 * Simple configuration

@@ -28,7 +28,7 @@ import com.github.mustachejava.MustacheFactory;
  * @author Vladimir Matena <matena@d3s.mff.cuni.cz>
  *
  */
-public class Config extends UnicastRemoteObject implements ConfigInf {
+public class Config extends UnicastRemoteObject implements ConfigIntf {
 	private static final long serialVersionUID = 0L;
 
 	public static final double DEFAULT_RESOLUTION = 0.02;
@@ -46,7 +46,7 @@ public class Config extends UnicastRemoteObject implements ConfigInf {
 	 * @author Vladimir Matena <matena@d3s.mff.cuni.cz>
 	 *
 	 */
-	public class Turtlebot extends UnicastRemoteObject {
+	class Turtlebot extends UnicastRemoteObject {
 		private static final long serialVersionUID = 0L;
 
 		public final String name;
@@ -169,7 +169,7 @@ public class Config extends UnicastRemoteObject implements ConfigInf {
 	 * @author Vladimir Matena <matena@d3s.mff.cuni.cz>
 	 *
 	 */
-	public class StageWindow extends UnicastRemoteObject {
+	class StageWindow extends UnicastRemoteObject {
 		private static final long serialVersionUID = 0L;
 
 		public final double sizex, sizey;
@@ -248,7 +248,7 @@ public class Config extends UnicastRemoteObject implements ConfigInf {
 	 *            Map name, used as prefix for map files
 	 * @throws IOException
 	 */
-	public Config(String mapName) throws IOException {
+	Config(String mapName) throws IOException {
 		this(mapName, DEFAULT_RESOLUTION, DEFAULT_SIM_INTERVAL_MS);
 	}
 
@@ -259,7 +259,7 @@ public class Config extends UnicastRemoteObject implements ConfigInf {
 	 *            Map name, used as prefix for map files
 	 * @throws IOException
 	 */
-	public Config(String mapName, double resolution, long simIntervalMs) throws IOException {
+	Config(String mapName, double resolution, long simIntervalMs) throws IOException {
 		this.mapName = mapName;
 		this.resolution = resolution;
 		this.simIntervalMs = simIntervalMs;

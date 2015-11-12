@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface ConfigInf extends Remote {
+public interface ConfigIntf extends Remote {
 	void addTurtlebot(double x, double y) throws RemoteException;
 
 	void addTurtlebot(String color, double x, double y) throws RemoteException;

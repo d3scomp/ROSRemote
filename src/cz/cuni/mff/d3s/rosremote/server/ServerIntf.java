@@ -11,10 +11,27 @@ import java.rmi.RemoteException;
  *
  */
 public interface ServerIntf extends Remote {
-	void sayHello() throws RemoteException;
-	
-	void generateConfigurationFiles(ConfigInf config) throws RemoteException;
-	
-	ConfigInf createConfig(String mapName) throws RemoteException, IOException;
-	ConfigInf createConfig(String mapName, double resolution, long simIntervalMs) throws RemoteException, IOException;
+	ConfigIntf createConfig(String mapName) throws RemoteException, IOException;
+
+	ConfigIntf createConfig(String mapName, double resolution, long simIntervalMs) throws RemoteException, IOException;
+
+	/**
+	 * Starts simulation
+	 * 
+	 * Starts simulation according to provided configuration
+	 * 
+	 * @param config
+	 *            Simulation configuration object
+	 * @return Simulation identification
+	 * @throws RemoteException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	int startSimulation(ConfigIntf config) throws RemoteException, IOException, InterruptedException;
+
+	void stopSimulaiton(int id) throws RemoteException, InterruptedException;
+
+	void waitForExit(int id) throws RemoteException, InterruptedException;
+
+	boolean isRunning(int id) throws RemoteException;
 }

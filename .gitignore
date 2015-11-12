@@ -5,4 +5,5 @@ target
 simulation/log
 simulation/simulation.launch
 simulation/simulation.world
+rospack_cache*
 

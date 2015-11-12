@@ -34,6 +34,12 @@ public class Server extends UnicastRemoteObject implements ServerIntf {
 	 */
 	@Override
 	public synchronized int startSimulation(ConfigIntf config) throws IOException, InterruptedException {
+		for (Process process : runningSimulations.values())
+			if (process.isAlive()) {
+				throw new UnsupportedOperationException(
+						"Running multiple simulations not yet implemented, we would need to run them in separate directories and copy all the files.");
+			}
+
 		generateConfigurationFiles(config);
 		return runROSSimulation();
 	}
@@ -73,7 +79,7 @@ public class Server extends UnicastRemoteObject implements ServerIntf {
 
 	@Override
 	public void stopSimulaiton(int id) throws InterruptedException {
-//		runningSimulations.get(id).destroyForcibly();
+		// runningSimulations.get(id).destroyForcibly();
 		runningSimulations.get(id).destroy();
 		waitForExit(id);
 	}

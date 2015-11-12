@@ -4,12 +4,12 @@
 	<arg name="map" default="maze"/>
 
 	<!--  ******************** Stage ********************  -->  
-	<node pkg="stage_ros" type="stageros" name="stageros" args="/home/ros/$(arg map).world">
+	<node pkg="stage_ros" type="stageros" name="stageros" args="simulation.world">
 		<param name="base_watchdog_timeout" value="0.5"/>
 	</node>
 
 	<!--  ****** Maps *****  -->
-	<node name="map_server" pkg="map_server" type="map_server" args="/home/ros/$(arg map).yaml">
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map).yaml">
 		<param name="frame_id" value="/map"/>
 	</node>
 </launch>

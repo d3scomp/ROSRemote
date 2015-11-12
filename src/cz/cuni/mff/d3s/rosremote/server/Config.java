@@ -1,12 +1,12 @@
-package cz.cuni.mff.d3s.rosremote;
+package cz.cuni.mff.d3s.rosremote.server;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,12 +28,17 @@ import com.github.mustachejava.MustacheFactory;
  * @author Vladimir Matena <matena@d3s.mff.cuni.cz>
  *
  */
-public class Config implements Serializable {
+public class Config extends UnicastRemoteObject implements ConfigInf {
 	private static final long serialVersionUID = 0L;
 
 	public static final double DEFAULT_RESOLUTION = 0.02;
 	public static final long DEFAULT_SIM_INTERVAL_MS = 100;
 	public static final String SIM_FILES_PREFIX = "simulation/";
+
+	public static final String LAUNCH_FILE_TEMPLATE = SIM_FILES_PREFIX + "simulation.launch.mustache";
+	public static final String LAUNCH_FILE = SIM_FILES_PREFIX + "simulation.launch";
+	public static final String WORLD_FILE_TEMPLATE = SIM_FILES_PREFIX + "simulation.world.mustache";
+	public static final String WORLD_FILE = SIM_FILES_PREFIX + "simulation.world";
 
 	/**
 	 * Holds information about single Turtlebot in configuration
@@ -41,7 +46,7 @@ public class Config implements Serializable {
 	 * @author Vladimir Matena <matena@d3s.mff.cuni.cz>
 	 *
 	 */
-	public class Turtlebot implements Serializable {
+	public class Turtlebot extends UnicastRemoteObject {
 		private static final long serialVersionUID = 0L;
 
 		public final String name;
@@ -56,8 +61,9 @@ public class Config implements Serializable {
 		 *            Initial position coordinate X
 		 * @param y
 		 *            Initial position coordinate Y
+		 * @throws RemoteException
 		 */
-		public Turtlebot(double x, double y) {
+		public Turtlebot(double x, double y) throws RemoteException {
 			this("black", x, y);
 		}
 
@@ -73,7 +79,7 @@ public class Config implements Serializable {
 		 * @param y
 		 *            Initial position coordinate Y
 		 */
-		public Turtlebot(String color, double x, double y) {
+		public Turtlebot(String color, double x, double y) throws RemoteException {
 			this.name = "robot_" + String.valueOf(turtleBotCounter++);
 			this.color = color;
 			this.x = x;
@@ -91,7 +97,7 @@ public class Config implements Serializable {
 	 * @author Vladimir Matena <matena@d3s.mff.cuni.cz>
 	 *
 	 */
-	class FloorPlan implements Serializable {
+	class FloorPlan extends UnicastRemoteObject {
 		private static final long serialVersionUID = 0L;
 
 		public String name;
@@ -117,7 +123,7 @@ public class Config implements Serializable {
 		 * @param posey
 		 *            Bitmap offset in meters - y coordinate
 		 */
-		public FloorPlan(String bitmap, double sizex, double sizey, double posex, double posey) {
+		public FloorPlan(String bitmap, double sizex, double sizey, double posex, double posey) throws RemoteException {
 			this.bitmap = bitmap;
 			this.sizex = sizex;
 			this.sizey = sizey;
@@ -163,7 +169,7 @@ public class Config implements Serializable {
 	 * @author Vladimir Matena <matena@d3s.mff.cuni.cz>
 	 *
 	 */
-	public class StageWindow implements Serializable {
+	public class StageWindow extends UnicastRemoteObject {
 		private static final long serialVersionUID = 0L;
 
 		public final double sizex, sizey;
@@ -172,7 +178,7 @@ public class Config implements Serializable {
 		public final double scale;
 
 		public StageWindow(double sizex, double sizey, double centerx, double centery, double rotatex, double rotatey,
-				double scale) {
+				double scale) throws RemoteException {
 			if (!Config.this.stageWindow.isEmpty()) {
 				throw new UnsupportedOperationException("Stage window already configured");
 			}
@@ -260,23 +266,39 @@ public class Config implements Serializable {
 		this.floorPlan = this.new FloorPlan(mapName + ".yaml");
 	}
 
-	public void writeLaunch(OutputStream out) throws IOException {
-		PrintWriter pw = new PrintWriter(out);
+	public void writeLaunch() throws IOException {
+		FileWriter launchWriter = new FileWriter(LAUNCH_FILE);
 
 		// Generate launch file using template
-		Mustache mustache = mf.compile(SIM_FILES_PREFIX + "simulation.launch.mustache");
-		mustache.execute(pw, this);
+		Mustache mustache = mf.compile(LAUNCH_FILE_TEMPLATE);
+		mustache.execute(launchWriter, this);
 
-		pw.flush();
+		launchWriter.close();
 	}
 
-	public void writeWorld(OutputStream out) {
-		PrintWriter pw = new PrintWriter(out);
+	public void writeWorld() throws IOException {
+		FileWriter worldWriter = new FileWriter(WORLD_FILE);
 
 		// Generate world file using template
-		Mustache mustache = mf.compile(SIM_FILES_PREFIX + "simulation.world.mustache");
-		mustache.execute(pw, this);
+		Mustache mustache = mf.compile(WORLD_FILE_TEMPLATE);
+		mustache.execute(worldWriter, this);
 
-		pw.flush();
+		worldWriter.close();
+	}
+
+	@Override
+	public void addTurtlebot(double x, double y) throws RemoteException {
+		this.new Turtlebot(x, y);
+	}
+
+	@Override
+	public void addTurtlebot(String color, double x, double y) throws RemoteException {
+		this.new Turtlebot(color, x, y);
+	}
+
+	@Override
+	public void setStageWindow(double sizex, double sizey, double centerx, double centery, double rotatex,
+			double rotatey, double scale) throws RemoteException {
+		this.new StageWindow(sizex, sizey, centerx, centery, rotatex, rotatey, scale);
 	}
 }

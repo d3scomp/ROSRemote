@@ -2,6 +2,8 @@ package cz.cuni.mff.d3s.rosremote;
 
 import java.io.IOException;
 
+import cz.cuni.mff.d3s.rosremote.server.Config;
+
 public class TestRunner {
 
 	public static void main(String[] args) throws IOException {
@@ -10,8 +12,8 @@ public class TestRunner {
 		conf.new Turtlebot(25, 12);
 		conf.new StageWindow(640, 480, 15, 8, 0, 0, 15);
 				
-		conf.writeLaunch(System.out);
-		conf.writeWorld(System.out);
+		conf.writeLaunch();
+		conf.writeWorld();
 	}
 
 }

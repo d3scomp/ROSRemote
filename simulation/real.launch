@@ -1,0 +1,16 @@
+<launch>
+	<arg name="map" default="corridor"/>
+	
+	<!--  ****** Maps *****  -->
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map).yaml">
+		<param name="frame_id" value="/map"/>
+	</node>
+
+	<include file="robot.launch">
+		<arg name="name" value="/"/>
+		<arg name="initial_pose_x" value="13.5"/>
+		<arg name="initial_pose_y" value="2.0"/>
+		<arg name="initial_pose_a" value="180"/>
+	</include>
+</launch>
+

@@ -15,4 +15,6 @@ public interface ConfigIntf extends Remote {
 	public void writeLaunch() throws IOException, RemoteException;
 
 	public void writeWorld() throws IOException, RemoteException;
+	
+	public int getNumOfRobots() throws RemoteException;
 }

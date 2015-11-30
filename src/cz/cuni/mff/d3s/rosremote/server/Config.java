@@ -34,6 +34,9 @@ public class Config extends UnicastRemoteObject implements ConfigIntf {
 	public static final double DEFAULT_RESOLUTION = 0.02;
 	public static final long DEFAULT_SIM_INTERVAL_MS = 100;
 	public static final String SIM_FILES_PREFIX = "simulation/";
+	
+	public static final String ROSOMNET_COMMAND = "/media/sf_ROSOMNeT++/out/gcc-debug/src/rosomnet";
+	public static final String ROSOMNET_DIRECTORY = "/media/sf_ROSOMNeT++/";
 
 	public static final String LAUNCH_FILE_TEMPLATE = SIM_FILES_PREFIX + "simulation.launch.mustache";
 	public static final String LAUNCH_FILE = SIM_FILES_PREFIX + "simulation.launch";
@@ -300,5 +303,10 @@ public class Config extends UnicastRemoteObject implements ConfigIntf {
 	public void setStageWindow(double sizex, double sizey, double centerx, double centery, double rotatex,
 			double rotatey, double scale) throws RemoteException {
 		this.new StageWindow(sizex, sizey, centerx, centery, rotatex, rotatey, scale);
+	}
+
+	@Override
+	public int getNumOfRobots() throws RemoteException {
+		return turtlebots.size();
 	}
 }

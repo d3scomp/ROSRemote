@@ -54,3 +54,7 @@ conservative_reset2:
   reset_distance: 1.5
 aggressive_reset2:
   reset_distance: 0.0
+  
+  
+planner_patience: 0.5
+controller_patience: 1.5

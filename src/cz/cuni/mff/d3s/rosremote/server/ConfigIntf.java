@@ -17,4 +17,6 @@ public interface ConfigIntf extends Remote {
 	public void writeWorld() throws IOException, RemoteException;
 	
 	public int getNumOfRobots() throws RemoteException;
+	
+	public String getMapName() throws RemoteException;
 }

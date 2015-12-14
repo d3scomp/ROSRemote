@@ -13,7 +13,7 @@ public class Server extends UnicastRemoteObject implements ServerIntf {
 	private int launchCounter = 0;
 	private Map<Integer, Process> runningSimulations = new HashMap<>();
 	private Map<Integer, Process> runningROSOMNeTs = new HashMap<>();
-	private int turtlebotCount;
+	private ConfigIntf config;
 
 	protected Server() throws RemoteException {
 		super();
@@ -47,12 +47,12 @@ public class Server extends UnicastRemoteObject implements ServerIntf {
 	}
 
 	private void generateConfigurationFiles(ConfigIntf config) {
+		this.config = config;
 		System.out.println("Generating configs");
 
 		try {
 			config.writeLaunch();
 			config.writeWorld();
-			turtlebotCount = config.getNumOfRobots();
 		} catch (IOException e) {
 			System.out.println("Config generation failed");
 			e.printStackTrace();
@@ -64,7 +64,7 @@ public class Server extends UnicastRemoteObject implements ServerIntf {
 
 		// Run ROSOMNeT++
 		ProcessBuilder rosomnetBuilder = new ProcessBuilder();
-		rosomnetBuilder.command(Config.ROSOMNET_COMMAND, String.valueOf(turtlebotCount));
+		rosomnetBuilder.command(Config.ROSOMNET_COMMAND, String.valueOf(config.getNumOfRobots()), config.getMapName());
 		rosomnetBuilder.directory(new File(Config.ROSOMNET_DIRECTORY));
 		rosomnetBuilder.inheritIO();
 		Process rosomnet = rosomnetBuilder.start();

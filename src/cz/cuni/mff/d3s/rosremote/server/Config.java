@@ -309,4 +309,9 @@ public class Config extends UnicastRemoteObject implements ConfigIntf {
 	public int getNumOfRobots() throws RemoteException {
 		return turtlebots.size();
 	}
+
+	@Override
+	public String getMapName() throws RemoteException {
+		return mapName;
+	}
 }

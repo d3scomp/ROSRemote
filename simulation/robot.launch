@@ -20,19 +20,19 @@
 			<arg name="stacks" value="hexagons" />
 			<arg name="3d_sensor" value="asus_xtion_pro" />
 		</include>
-		<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+		<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" required="true">
 			<param name="use_gui" value="false"/>
 		</node>
 
 <!--		Command Velocity multiplexer
-		<node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
-		<node pkg="nodelet" type="nodelet" name="cmd_vel_mux" args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
+		<node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager" required="true"/>
+		<node pkg="nodelet" type="nodelet" name="cmd_vel_mux" args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager" required="true">
 			<param name="yaml_cfg_file" value="$(find turtlebot_bringup)/param/mux.yaml"/>
 			<remap from="cmd_vel_mux/output" to="mobile_base/commands/velocity"/>
 		</node> -->
 
 <!--		Velocity smoother
-		<node pkg="nodelet" type="nodelet" name="navigation_velocity_smoother" args="load yocs_velocity_smoother/VelocitySmootherNodelet /mobile_base_nodelet_manager">
+		<node pkg="nodelet" type="nodelet" name="navigation_velocity_smoother" args="load yocs_velocity_smoother/VelocitySmootherNodelet /mobile_base_nodelet_manager" required="true">
 			<rosparam file="$(find turtlebot_bringup)/param/defaults/smoother.yaml" command="load"/>
 			<remap from="navigation_velocity_smoother/smooth_cmd_vel" to="cmd_vel_mux/input/navi"/>
 			<remap from="navigation_velocity_smoother/odometry" to="odom"/>
@@ -40,7 +40,7 @@
 		</node> -->
 
 <!--		Safety controller
-		<node pkg="nodelet" type="nodelet" name="kobuki_safety_controller" args="load kobuki_safety_controller/SafetyControllerNodelet /mobile_base_nodelet_manager">
+		<node pkg="nodelet" type="nodelet" name="kobuki_safety_controller" args="load kobuki_safety_controller/SafetyControllerNodelet /mobile_base_nodelet_manager" required="true">
 			<remap from="kobuki_safety_controller/cmd_vel" to="cmd_vel_mux/input/safety_controller"/>
 			<remap from="kobuki_safety_controller/events/bumper" to="mobile_base/events/bumper"/>
 			<remap from="kobuki_safety_controller/events/cliff" to="mobile_base/events/cliff"/>
@@ -48,7 +48,7 @@
 		</node> -->
 
 		<!-- Move -->
-		<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen" required="true">
 			<rosparam file="params/costmap_common_params.yaml" command="load" ns="global_costmap" />
 			<rosparam file="params/costmap_common_params.yaml" command="load" ns="local_costmap" />   
 			<rosparam file="params/local_costmap_params.yaml" command="load" />   
@@ -70,7 +70,7 @@
 		</node>
 
 		<!-- AMCL -->
-		<node pkg="amcl" type="amcl" name="amcl">
+		<node pkg="amcl" type="amcl" name="amcl" required="true">
 			<param name="use_map_topic"             value="true"/>
 			<!-- Publish scans from best pose at a max of 10 Hz -->
 			<param name="odom_model_type"           value="diff"/>

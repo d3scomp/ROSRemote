@@ -17,7 +17,9 @@ oscillation_distance: 0.2
 # local planner - default is trajectory rollout
 base_local_planner: "dwa_local_planner/DWAPlannerROS"
 
-base_global_planner: "navfn/NavfnROS" #alternatives: global_planner/GlobalPlanner, carrot_planner/CarrotPlanner
+base_global_planner: "navfn/NavfnROS"
+#base_global_planner: "global_planner/GlobalPlanner"
+#base_global_planner: "carrot_planner/CarrotPlanner"
 
 recovery_behavior_enabled: true
 
@@ -30,5 +32,5 @@ recovery_behaviors:
 aggressive_reset:
   reset_distance: 0.0
 
-planner_patience: 0.5
-controller_patience: 1.5
+planner_patience: 3
+controller_patience: 5

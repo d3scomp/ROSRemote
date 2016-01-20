@@ -26,10 +26,10 @@ recovery_behavior_enabled: true
 recovery_behaviors:
     - name: reset
       type: clear_costmap_recovery/ClearCostmapRecovery
-    - name: clearing_rotation
-      type: rotate_recovery/RotateRecovery
-    - name: aggressive_reset
-      type: clear_costmap_recovery/ClearCostmapRecovery
+#    - name: clearing_rotation
+#      type: rotate_recovery/RotateRecovery
+#    - name: aggressive_reset
+#      type: clear_costmap_recovery/ClearCostmapRecovery
 #    - name: force_clearing_rotation
 #      type: force_rotate_recovery/ForceRotateRecovery
 #    - name: clearing_rotation2

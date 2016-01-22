@@ -83,6 +83,8 @@ public class Server extends UnicastRemoteObject implements ServerIntf {
 		int processId = launchCounter++;
 		runningSimulations.put(processId, launch);
 		runningROSOMNeTs.put(processId, rosomnet);
+		
+		Thread.sleep(5000);
 
 		return processId;
 	}

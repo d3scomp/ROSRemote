@@ -54,4 +54,12 @@
 			<version>1.5</version>
 		</dependency>
 	</dependencies>
+	
+	<distributionManagement>
+ 		<repository>
+			<id>d3s</id>
+			<name>D3S maven repository</name>
+			<url>https://gitlab.d3s.mff.cuni.cz:8443/nexus/content/repositories/releases</url>
+		</repository>
+	</distributionManagement>
 </project>
